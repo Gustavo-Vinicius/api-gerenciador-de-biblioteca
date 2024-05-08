@@ -15,6 +15,11 @@ namespace gerenciador_de_biblioteca.API.Controllers
             _usuarioService = usuarioService;
         }
 
+        /// <summary>
+        /// Cadastra um novo usuario.
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Usuario usuario)
         {
@@ -22,6 +27,11 @@ namespace gerenciador_de_biblioteca.API.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Buscar usuario por ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

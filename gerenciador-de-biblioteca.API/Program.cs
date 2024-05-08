@@ -1,3 +1,4 @@
+using gerenciador_de_biblioteca.API.Configuration;
 using gerenciador_de_biblioteca.Core.Interfaces.Repositories;
 using gerenciador_de_biblioteca.Core.Interfaces.Services;
 using gerenciador_de_biblioteca.Core.Services;
@@ -15,6 +16,8 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("GerenciadorDeBiblioteca");
 builder.Services.AddDbContext<BibliotecaDbContext>(p => p.UseSqlServer(connectionString));
+
+builder.Services.AddSwaggerConfiguration();
 
 builder.Services.AddScoped<IGerenciamentoBibliotecaRepository, GerenciamentoBibliotecaRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
