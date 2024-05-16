@@ -1,3 +1,4 @@
+using gerenciador_de_biblioteca.Core.DTOs;
 using gerenciador_de_biblioteca.Core.Entities;
 using gerenciador_de_biblioteca.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,20 +18,20 @@ namespace gerenciador_de_biblioteca.API.Controllers
         /// <summary>
         /// Rotina utilizada para realizar emprestimo dos livros cadastrados.
         /// </summary>
-        /// <param name="emprestimo"></param>
+        /// <param name="emprestimoDTO"></param>
         /// <returns></returns>
         [HttpPost]
         [SwaggerOperation(Summary = "Realiza o empréstimo de um livro.")]
         [SwaggerResponse(200, "O empréstimo foi realizado com sucesso.")]
         [SwaggerResponse(400, "Os dados da requisição estão ausentes ou são inválidos.")]
-        public async Task<IActionResult> Post([FromBody] Emprestimo emprestimo)
+        public async Task<IActionResult> Post([FromBody] EmprestimoDTO emprestimoDTO)
         {
-            await _gerenciamentoBibliotecaService.EfetuarEmprestimoDoLivroAsync(emprestimo);
+            await _gerenciamentoBibliotecaService.EfetuarEmprestimoDoLivroAsync(emprestimoDTO.IdUsuario, emprestimoDTO.IdLivro, emprestimoDTO.DataEmprestimo, emprestimoDTO.DataDevolucao);
             return Ok();
         }
 
         /// <summary>
-        /// Rotina para realizar a devolução para os livros 
+        /// Rotina para realizar a devolução para os livros. 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -43,6 +44,17 @@ namespace gerenciador_de_biblioteca.API.Controllers
             await _gerenciamentoBibliotecaService.RealizarDevolucaoDeLivroAsync(id);
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Obtém todos os emprestimos realizados pela biblioteca.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> ObterTodosOsEmprestimosAsync()
+        {
+            var emprestimos = await _gerenciamentoBibliotecaService.ObterTodosOsEmprestimosAsync();
+            return Ok(emprestimos);
         }
     }
 }

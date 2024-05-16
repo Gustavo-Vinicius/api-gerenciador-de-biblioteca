@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using gerenciador_de_biblioteca.Core.DTOs;
 using gerenciador_de_biblioteca.Core.Entities;
 using gerenciador_de_biblioteca.Core.Interfaces.Repositories;
 using gerenciador_de_biblioteca.Core.Interfaces.Services;
@@ -17,9 +18,9 @@ namespace gerenciador_de_biblioteca.Core.Services
         }
 
 
-        public async Task EfetuarEmprestimoDoLivroAsync(Emprestimo emprestimo)
+        public async Task EfetuarEmprestimoDoLivroAsync(int idUsuario, int idLivro, DateTime dataEmprestimo, DateTime? dataDevolucao)
         {
-            await _gerenciamentoBibliotecaRepository.EfetuarEmprestimoDoLivroAsync(emprestimo);
+            await _gerenciamentoBibliotecaRepository.EfetuarEmprestimoDoLivroAsync(idUsuario, idLivro, dataEmprestimo, dataDevolucao);
         }
 
         public async Task RealizarDevolucaoDeLivroAsync(int id)
@@ -35,6 +36,11 @@ namespace gerenciador_de_biblioteca.Core.Services
         {
            var mensagem = await _gerenciamentoBibliotecaRepository.EmitirMensagemAsync(id);
            return mensagem;
+        }
+
+        public async Task<List<EmprestimoDTO>> ObterTodosOsEmprestimosAsync()
+        {
+            return await _gerenciamentoBibliotecaRepository.ObterTodosOsEmprestimosAsync();
         }
     }
 }

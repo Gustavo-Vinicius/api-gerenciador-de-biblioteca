@@ -1,5 +1,7 @@
+using gerenciador_de_biblioteca.Core.DTOs;
 using gerenciador_de_biblioteca.Core.Entities;
 using gerenciador_de_biblioteca.Core.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace gerenciador_de_biblioteca.Infrastructure.Persistence.Repositories
 {
@@ -12,15 +14,22 @@ namespace gerenciador_de_biblioteca.Infrastructure.Persistence.Repositories
         }
 
 
-        public async Task EfetuarEmprestimoDoLivroAsync(Emprestimo emprestimo)
+        public async Task EfetuarEmprestimoDoLivroAsync(int idUsuario, int idLivro, DateTime dataEmprestimo, DateTime? dataDevolucao)
         {
-            var livro = await _dbContext.Livros.FindAsync(emprestimo.IdLivro);
-            var usuario = await _dbContext.Usuarios.FindAsync(emprestimo.IdUsuario);
-            // if (livro == null || usuario == null)
-            // {
-            //     return BadRequest("Livro ou usuário não encontrados.");
-            // }
-            emprestimo.DataEmprestimo = DateTime.Now;
+            var livro = await _dbContext.Livros.FindAsync(idLivro);
+            var usuario = await _dbContext.Usuarios.FindAsync(idUsuario);
+            if (livro == null || usuario == null)
+            {
+                throw new Exception("Livro ou usuário não encontrados.");
+            }
+
+            var emprestimo = new Emprestimo
+            {
+                IdUsuario = idUsuario,
+                IdLivro = idLivro,
+                DataEmprestimo = dataEmprestimo,
+                DataDevolucao = dataDevolucao
+            };
 
             await _dbContext.Emprestimos.AddAsync(emprestimo);
 
@@ -65,6 +74,21 @@ namespace gerenciador_de_biblioteca.Infrastructure.Persistence.Repositories
             {
                 return "Livro devolvido em dia.";
             }
+        }
+
+        public async Task<List<EmprestimoDTO>> ObterTodosOsEmprestimosAsync()
+        {
+            var emprestimos = await _dbContext.Emprestimos.ToListAsync();
+
+            var emprestimoDTO = emprestimos.Select(p => new EmprestimoDTO
+            {
+                IdUsuario = p.IdUsuario,
+                IdLivro = p.IdLivro,
+                DataEmprestimo = p.DataEmprestimo,
+                DataDevolucao = p.DataDevolucao
+            }).ToList();
+
+            return emprestimoDTO;
         }
     }
 }
