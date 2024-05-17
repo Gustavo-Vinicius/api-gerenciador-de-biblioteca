@@ -170,7 +170,7 @@ _Obter livro pelo Id_
 
 _Deletar livro pelo Id_
 
-**route params:**
+**query params:**
 
 `id: int`
 
@@ -178,3 +178,42 @@ _Deletar livro pelo Id_
 _No content_
 
 <hr>
+
+### Mensagem Controller
+
+<img src="https://img.shields.io/badge/-GET-%2361AFFE" height="30" />
+
+**"/api/Mensagem/{Id}"**
+
+_Obtém mensagem de usuario por Id_
+
+**query params:**
+
+`id: int`
+
+**response:**
+_content_
+
+<hr>
+
+### Data Devolução Controller
+
+<img src="https://img.shields.io/badge/-PUT-%23FCA130" height="30" />
+
+**"/api/DataDevolucao/{Id}"**
+
+_Atualizar data de devolucao_
+
+**query params:**
+
+`id: int`
+`dataDevolucao: date-time` 
+
+**response:**
+_No content_
+
+<hr>
+
+
+
+
